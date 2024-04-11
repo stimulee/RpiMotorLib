@@ -128,9 +128,10 @@ from RpiMotorLib import RpiMotorLib
 GPIO_pins = (14, 15, 18) # Microstep Resolution MS1-MS3 -> GPIO Pin
 direction= 20       # Direction -> GPIO Pin
 step = 21      # Step -> GPIO Pin
+enable = 10    # Enable -> GPIO Pin
 
 # Declare a instance of class pass GPIO pins numbers and the motor type
-mymotortest = RpiMotorLib.A4988Nema(direction, step, GPIO_pins, "DRV8825")
+mymotortest = RpiMotorLib.A4988Nema(enable, direction, step, GPIO_pins, "DRV8825")
 
 
 # call the function, pass the arguments

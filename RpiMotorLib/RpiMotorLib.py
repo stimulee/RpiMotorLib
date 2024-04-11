@@ -185,16 +185,18 @@ class BYJMotor(object):
 
 class A4988Nema(object):
     """ Class to control a Nema bi-polar stepper motor with a A4988 also tested with DRV8825"""
-    def __init__(self, direction_pin, step_pin, mode_pins, motor_type="A4988"):
+    def __init__(self, enable_pin, direction_pin, step_pin, mode_pins, motor_type="A4988"):
         """ class init method 3 inputs
-        (1) direction type=int , help=GPIO pin connected to DIR pin of IC
-        (2) step_pin type=int , help=GPIO pin connected to STEP of IC
-        (3) mode_pins type=tuple of 3 ints, help=GPIO pins connected to
+        (1) enable_pin type=int , help=GPIO pin connected to ENABLE pin of IC
+        (2) direction type=int , help=GPIO pin connected to DIR pin of IC
+        (3) step_pin type=int , help=GPIO pin connected to STEP of IC
+        (4) mode_pins type=tuple of 3 ints, help=GPIO pins connected to
         Microstep Resolution pins MS1-MS3 of IC, can be set to (-1,-1,-1) to turn off
         GPIO resolution.
-        (4) motor_type type=string, help=Type of motor two options: A4988 or DRV8825
+        (5) motor_type type=string, help=Type of motor two options: A4988 or DRV8825
         """
         self.motor_type = motor_type
+        self.enable_pin = enable_pin
         self.direction_pin = direction_pin
         self.step_pin = step_pin
 
@@ -210,6 +212,7 @@ class A4988Nema(object):
     def motor_stop(self):
         """ Stop the motor """
         self.stop_motor = True
+        GPIO.output(self.enable_pin, 0)
 
     def resolution_set(self, steptype):
         """ method to calculate step resolution
@@ -271,6 +274,8 @@ class A4988Nema(object):
         """
         self.stop_motor = False
         # setup GPIO
+        GPIO.setup(self.enable_pin, GPIO.OUT)
+        GPIO.output(self.enable_pin, 1)
         GPIO.setup(self.direction_pin, GPIO.OUT)
         GPIO.setup(self.step_pin, GPIO.OUT)
         GPIO.output(self.direction_pin, clockwise)

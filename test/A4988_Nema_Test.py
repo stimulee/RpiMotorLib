@@ -35,10 +35,11 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO_pins = (14, 15, 18)
 direction= 20       # Direction -> GPIO Pin
 step = 21      # Step -> GPIO Pin
+enable = 10    # Enable -> GPIO Pin
 
 # Declare an named instance of class pass GPIO-PINs
 # (self, direction_pin, step_pin, mode_pins , motor_type):
-mymotortest = RpiMotorLib.A4988Nema(direction, step, GPIO_pins, "A4988")
+mymotortest = RpiMotorLib.A4988Nema(enable, direction, step, GPIO_pins, "A4988")
 
 
 def main():
@@ -89,6 +90,7 @@ def main():
     mymotortest.motor_go(False, "1/16" , 3200, .005, True, .05)
     time.sleep(1)
 
+    mymotortest.motor_stop()
 
 """
 # EMERGENCY STOP BUTTON CODE: See docstring
